@@ -355,11 +355,12 @@ https://en.wikipedia.org/wiki/The_Gift_of_the_Magi
   const readerTitle = document.getElementById("reader-title");
   const readerContent = document.getElementById("reader-content");
 
- function openPage(page) {
+function openPage(page) {
   readerTitle.textContent = page.title;
   readerContent.textContent = page.text;
   reader.showModal();
 
+  reader.scrollTop = 0;
   readerContent.scrollTop = 0;
   }
 
