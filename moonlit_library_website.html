@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moonlit Library</title>
+<style>
+  * { box-sizing: border-box; }
+  :root {
+    --wood: #3a1e17;
+    --wood-light: #68402b;
+    --gold: #d8bd78;
+    --cream: #f5e7c5;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--cream);
+    font-family: Georgia, "Times New Roman", serif;
+    background:
+      radial-gradient(ellipse at 20% 10%, #49405b 0, transparent 30%),
+      radial-gradient(ellipse at 80% 5%, #25243f 0, transparent 35%),
+      linear-gradient(#19182b 0 44%, #291d23 44% 72%, #211817 72%);
+    overflow-x: hidden;
+  }
+  /* Simple starry wallpaper made with CSS */
+  body::before {
+    content: "✦  ·   ★      ✧       ·   ☆       ✦     ·       ★   ✧      ·   ✦";
+    position: absolute; top: 12px; left: 0; width: 100%;
+    height: 225px; overflow: hidden; text-align: center;
+    line-height: 2.4; letter-spacing: 12px; font-size: 21px;
+    color: #e8d7b2; opacity: .72; pointer-events: none;
+    text-shadow: 0 0 8px #e8d7b2;
+  }
+  header { text-align: center; padding: 28px 12px 12px; position: relative; z-index: 1; }
+  header h1 { margin: 0; color: var(--gold); letter-spacing: 3px; font-size: clamp(25px, 4vw, 40px); text-shadow: 2px 3px #24110e; }
+  header p { margin: 8px 0 0; font-style: italic; color: #e5d7bd; }
+  .wall-trim { height: 16px; margin-top: 22px; border-top: 4px solid #7d563a; border-bottom: 4px solid #4a2b21; background: #2d1c1a; }
+  .library {
+    max-width: 1000px; margin: 0 auto 42px; padding: 0 16px;
+    position: relative;
+  }
+  .sign {
+    width: min(440px, 90%); margin: 12px auto 0; padding: 12px 18px;
+    text-align: center; color: #3c2615; font-weight: bold; font-size: 21px;
+    letter-spacing: 2px; background: linear-gradient(#f4df9e, #b99752);
+    border: 5px double #5b3c20; outline: 2px solid #c8a55b;
+    box-shadow: 0 5px 8px #130d0b;
+  }
+  .shelf {
+    margin: 0 auto; padding: 18px 18px 20px;
+    background: linear-gradient(90deg, #28130f, #603722 12%, #3b2018 50%, #67402a 88%, #25120e);
+    border: 7px solid #28130f; border-top-width: 12px;
+    box-shadow: 0 13px 18px #100b0a, inset 0 0 0 2px #8a5a39;
+  }
+  .book-row {
+    display: flex; align-items: stretch; justify-content: center; gap: 8px;
+    min-height: 190px; padding: 8px 5px 12px;
+    border-bottom: 13px solid #71472e;
+    box-shadow: 0 5px 0 #24120e;
+  }
+  .book-row:last-child { border-bottom-width: 13px; margin-top: 8px; }
+  .book {
+    flex: 1 1 0; min-width: 0; max-width: 155px; min-height: 165px;
+    padding: 12px 7px; border: 3px double rgba(242,220,157,.85);
+    border-radius: 2px; color: #f4e5bb; cursor: pointer;
+    font-family: Georgia, serif; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    box-shadow: inset 5px 0 7px #0005, 3px 2px 4px #140b08;
+    transition: transform .18s, filter .18s;
+    background: linear-gradient(90deg, #153a2b, #24513b 22%, #153a2b);
+  }
+  .book:hover, .book:focus-visible { transform: translateY(-8px); filter: brightness(1.25); outline: 2px solid var(--gold); }
+  .book:nth-child(2n) { background: linear-gradient(90deg, #162c43, #294764 22%, #172a3c); }
+  .book:nth-child(3n) { background: linear-gradient(90deg, #542b25, #814536 22%, #4b241f); }
+  .book:nth-child(4n) { background: linear-gradient(90deg, #6a4c19, #a17a2e 22%, #624518); }
+  .book .number { font-size: 11px; letter-spacing: 2px; opacity: .85; margin-bottom: 10px; }
+  .book .book-title { font-size: clamp(12px, 1.7vw, 17px); line-height: 1.25; overflow-wrap: anywhere; }
+  .book .hint { font-size: 10px; margin-top: 12px; opacity: .85; }
+  .floor { height: 60px; background: repeating-linear-gradient(90deg, #281b18 0 80px, #3c2821 82px 84px); border-top: 8px solid #70452d; transform: perspective(180px) rotateX(4deg); }
+  .info-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 18px 0 0; }
+  .info-links button { background: #241b22; color: var(--gold); border: 1px solid #b89a5c; padding: 10px 14px; font-family: inherit; cursor: pointer; }
+  .info-links button:hover { background: #493127; }
+  .note { text-align: center; color: #d6c6a7; font-size: 13px; margin: 18px 0; }
+  dialog { width: min(680px, calc(100% - 28px)); max-height: 82vh; overflow: auto; color: #33251c; background: #f4e7ca; border: 7px double #8a693a; box-shadow: 0 15px 50px #000b; padding: 24px; }
+  dialog::backdrop { background: #080710c9; }
+  dialog h2 { margin-top: 0; color: #54321e; }
+  .essay-text { white-space: pre-wrap; line-height: 1.7; }
+  .close { display: block; margin: 22px 0 0 auto; background: #4a2b20; color: #fff0ce; border: 0; padding: 10px 16px; cursor: pointer; font-family: inherit; }
+  @media (max-width: 600px) {
+    .shelf { padding: 10px 7px 14px; border-width: 4px; }
+    .book-row { gap: 5px; min-height: 145px; padding: 6px 2px 10px; }
+    .book { min-height: 125px; padding: 7px 3px; border-width: 2px; }
+    .book .number { font-size: 9px; margin-bottom: 6px; }
+    .book .hint { font-size: 8px; margin-top: 7px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>THE MOONLIT LIBRARY</h1>
+  <p>A little shelf of stories, thoughts, and essays</p>
+</header>
+<div class="wall-trim"></div>
+
+<main class="library">
+  <div class="sign">✦ OUR WRITTEN WORKS ✦</div>
+  <section class="shelf" aria-label="Essay bookshelf">
+    <div class="book-row">
+      <button class="book" data-essay="0"><span class="number">ESSAY NO. 01</span><span class="book-title">The First Story</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="1"><span class="number">ESSAY NO. 02</span><span class="book-title">A World of Ideas</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="2"><span class="number">ESSAY NO. 03</span><span class="book-title">Lessons in Life</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="3"><span class="number">ESSAY NO. 04</span><span class="book-title">Beyond the Pages</span><span class="hint">Click to read</span></button>
+    </div>
+    <div class="book-row">
+      <button class="book" data-essay="4"><span class="number">ESSAY NO. 05</span><span class="book-title">A Different View</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="5"><span class="number">ESSAY NO. 06</span><span class="book-title">Small Discoveries</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="6"><span class="number">ESSAY NO. 07</span><span class="book-title">Words That Matter</span><span class="hint">Click to read</span></button>
+      <button class="book" data-essay="7"><span class="number">ESSAY NO. 08</span><span class="book-title">Our Final Chapter</span><span class="hint">Click to read</span></button>
+    </div>
+  </section>
+  <div class="floor"></div>
+  <nav class="info-links" aria-label="Library pages">
+    <button data-info="about">About the Author</button>
+    <button data-info="works">Written Works</button>
+    <button data-info="terms">Terms of Service</button>
+  </nav>
+  <p class="note">Choose a book to open an essay. Replace the sample titles and text with your own work.</p>
+</main>
+
+<dialog id="reader">
+  <h2 id="reader-title">Essay title</h2>
+  <div class="essay-text" id="reader-content"></div>
+  <button class="close" id="close-reader">Close book ✦</button>
+</dialog>
+
+<script>
+  // EDIT THESE 8 ITEMS: change each title and essay text to your group's actual work.
+  const essays = [
+    { title: "The First Story", text: "Put Essay 1 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "A World of Ideas", text: "Put Essay 2 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "Lessons in Life", text: "Put Essay 3 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "Beyond the Pages", text: "Put Essay 4 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "A Different View", text: "Put Essay 5 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "Small Discoveries", text: "Put Essay 6 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "Words That Matter", text: "Put Essay 7 here.\\n\\nReplace this sample paragraph with your actual essay." },
+    { title: "Our Final Chapter", text: "Put Essay 8 here.\\n\\nReplace this sample paragraph with your actual essay." }
+  ];
+
+  const infoPages = {
+    about: { title: "About the Authors", text: "Welcome to our Moonlit Library!\\n\\nAdd your group members' names, section, and a short introduction here." },
+    works: { title: "Written Works", text: "This library contains eight essays written by our group.\\n\\nReplace this with a short introduction to your collection." },
+    terms: { title: "Terms of Service", text: "Please respect the writers and their work. Essays are shared for our class project.\\n\\nEdit these terms to match your teacher's instructions." }
+  };
+
+  const reader = document.getElementById("reader");
+  const readerTitle = document.getElementById("reader-title");
+  const readerContent = document.getElementById("reader-content");
+
+  function openPage(page) {
+    readerTitle.textContent = page.title;
+    readerContent.textContent = page.text;
+    reader.showModal();
+  }
+
+  document.querySelectorAll("[data-essay]").forEach(book => {
+    book.addEventListener("click", () => openPage(essays[Number(book.dataset.essay)]));
+  });
+  document.querySelectorAll("[data-info]").forEach(button => {
+    button.addEventListener("click", () => openPage(infoPages[button.dataset.info]));
+  });
+  document.getElementById("close-reader").addEventListener("click", () => reader.close());
+  reader.addEventListener("click", event => {
+    if (event.target === reader) reader.close();
+  });
+</script>
+</body>
+</html>
