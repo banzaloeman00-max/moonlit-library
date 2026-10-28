@@ -85,7 +85,9 @@
   dialog { width: min(680px, calc(100% - 28px)); max-height: 82vh; overflow: auto; color: #33251c; background: #f4e7ca; border: 7px double #8a693a; box-shadow: 0 15px 50px #000b; padding: 24px; }
   dialog::backdrop { background: #080710c9; }
   dialog h2 { margin-top: 0; color: #54321e; }
-  .essay-text { white-space: pre-wrap; line-height: 1.7; }
+  .essay-text {   white-space: pre-wrap;
+  line-height: 1.7;
+  text-indent: 2em; }
   .close { display: block; margin: 22px 0 0 auto; background: #4a2b20; color: #fff0ce; border: 0; padding: 10px 16px; cursor: pointer; font-family: inherit; }
   @media (max-width: 600px) {
     .shelf { padding: 10px 7px 14px; border-width: 4px; }
@@ -125,7 +127,7 @@
     <button data-info="works">References</button>
     <button data-info="terms">Members</button>
   </nav>
-  <p class="note">Choose a book to open an essay. </p>
+  <p class="note">Choose a book to open a Formalist Criticism. </p>
 </main>
 
 <dialog id="reader">
@@ -342,7 +344,7 @@ https://en.wikipedia.org/wiki/The_Gift_of_the_Magi
     Yumang Louis Zantino
     Leviste Shilo Antonia
     Lorio Kaynne
-    Noreen Darlene
+    Tello Darlene
     Trinidad Alyanna
     `
   }
@@ -353,10 +355,12 @@ https://en.wikipedia.org/wiki/The_Gift_of_the_Magi
   const readerTitle = document.getElementById("reader-title");
   const readerContent = document.getElementById("reader-content");
 
-  function openPage(page) {
-    readerTitle.textContent = page.title;
-    readerContent.textContent = page.text;
-    reader.showModal();
+ function openPage(page) {
+  readerTitle.textContent = page.title;
+  readerContent.textContent = page.text;
+  reader.showModal();
+
+  readerContent.scrollTop = 0;
   }
 
   document.querySelectorAll("[data-essay]").forEach(book => {
